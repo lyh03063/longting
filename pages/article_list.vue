@@ -1,7 +1,7 @@
 <template>
   <div>
     <head_nav></head_nav>
-    <div class="product-banner">企业新闻</div>
+    <div class="product-banner">企业新闻-</div>
     <div class="main-box layout1200">
       <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
