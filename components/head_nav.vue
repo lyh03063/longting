@@ -46,8 +46,10 @@ export default {
             { value: "新风机组", url: "/product_list?categoryId=5" }
           ]
         },
+        
         { value: "工程案列", url: "/case_list" },
-        { value: "中央空调维保", url: "/case_list" },
+        { value: "家用中央空调", url: "/subject_family" },
+        { value: "中央空调清洗", url: "/subject_clean" },
         { value: "关于我们", url: "" ,child: [
             { value: "联系我们", url: "/article_detail?articleId=2" },
             { value: "企业新闻", url: "/article_list" }

@@ -88,15 +88,16 @@ export default {
 .product-box {
   border: 1px solid #eeeeee;
   padding: 40px;
+  display: flex;
 }
 .img-box {
-  float: left;
+
   width: 450px;
   height: 320px;
   margin-right: 30px;
 }
 .product-detail {
-  float: left;
+ 
   width: 60%;
 }
 .image {

@@ -95,6 +95,7 @@ a{
     }
 
     .float-bar ul li b.a {
+        position: absolute;
         background-image: url(http://www.dmagic.cn/images/IconS/IconS_2562.png);
     }
 
