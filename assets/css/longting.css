@@ -1,9 +1,103 @@
-.layout1200{
+.layout1200 {
     width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    }
-    .layout{
+}
+
+.layout {
     border: 1px red solid;
+}
+
+.DPF {
+    display: flex;
+}
+
+html {
+    font-size: 28.8px;
+}
+
+.box-res-flex{
+    display: flex;
+}
+a {
+    text-decoration: none;
+    color: #666;
+  }
+/*屏幕宽度小于640px*/
+
+@media screen and (max-width: 640px) {
+    .layout1200 {
+        width: 100%;
     }
+    html {
+        font-size: 5.333vw;
+    }
+    .box-res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .box-res-flex {
+        /*开启换行*/
+        flex-wrap: wrap;
+    }
+}
+
+/*处理详情图片超出的问题*/
+
+.doneDetailImg img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9;
+}
+
+ /****************************列表组样式-START****************************/
+ 
+.n-list-g-titlebar {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
+}
+.n-list-g-title {
+  /* width: 160px; */
+  line-height: 50px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  /* float: left; */
+}
+ /****************************列表组样式-END****************************/
+
+
+
+
+ /****************************标准列表图片样式-START****************************/
+ .n-img-box {
+    width: 100%;
+    height: 207px;
+    overflow: hidden;
+  }
+  .n-img-box img {
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+  }
+
+  .n-img-box img {
+    transform: scale(1.2);
+  }
+/*屏幕宽度小于640px*/
+@media screen and (max-width: 640px) {
+    .n-img-box {
+      height: 35vw;
+    }
+  }
   
+  /*屏幕宽度小于360px*/
+  @media screen and (max-width: 360px) {
+    .n-img-box {
+      height: 58vw;
+    }
+  }
+ /****************************标准列表图片样式-END****************************/
+

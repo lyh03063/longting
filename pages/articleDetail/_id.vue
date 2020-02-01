@@ -1,11 +1,10 @@
 <template>
   <div>
-    <head_nav></head_nav>
-    <hr />
+    <page_head></page_head>
     <div class="main-box layout1200">
-      <div style="margin: 10px 0px">
+      <div class="box-res  MB10">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>首页</el-breadcrumb-item>
+          <el-breadcrumb-item><a  href="/">首页</a></el-breadcrumb-item>
           <el-breadcrumb-item>企业新闻</el-breadcrumb-item>
           <el-breadcrumb-item>文章标题</el-breadcrumb-item>
         </el-breadcrumb>
@@ -16,25 +15,24 @@
         <div class="article-detail" v-html="articleDetail.detail"></div>
       </div>
     </div>
-    <hr />
-    <floor_nav></floor_nav>
+    <page_foot></page_foot>
     <contact_right></contact_right>
   </div>
 </template>
 
 <script>
-import head_nav from "@/components/head_nav.vue";
-import floor_nav from "@/components/floor_nav.vue";
+import page_head from "@/components/page_head.vue";
+import page_foot from "@/components/page_foot.vue";
 import contact_right from "@/components/contact_right.vue";
 import axios from 'axios'
 export default {
-  components: { head_nav, contact_right, floor_nav },
-  async asyncData({ route }) {
+  components: { page_head, contact_right, page_foot },
+  async asyncData({ route,params }) {
     let { data } = await axios({
       method: "post",
-      url: "http://120.76.160.41:3000/crossDetail?page=longting_article",
+      url: `${global.PUB.domain}/crossDetail?page=longting_article`,
       data: {
-        id: route.query.articleId
+        id: params.id
       }
     }).catch(() => {});
     return { articleDetail: data.Doc };
@@ -45,10 +43,10 @@ export default {
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
   head(){
       return{
-          title:'深圳中央空调-'+this.articleDetail.name,
-          meta:[
-              {hid:'description',name:'nesw1',content:"这是一个SEO"}
-          ]
+          title:`${this.articleDetail.name}-深圳龙庭空调制冷有限公司`,
+          // meta:[
+          //     {hid:'description',name:'nesw1',content:""}
+          // ]
       }
   },
 };

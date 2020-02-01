@@ -39,9 +39,7 @@ export default {
 </script>
 
 <style scoped>
-a{
-  text-decoration: none;
-}
+
 .float-bar {
         position: fixed;
         top: 200px;

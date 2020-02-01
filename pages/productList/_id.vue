@@ -1,17 +1,19 @@
 <template>
   <div>
-    <head_nav></head_nav>
+    <page_head></page_head>
     <div class="product-banner">龙庭产品中心</div>
-    <div class="product-main layout1200">
-      <div>
+    <div class="product-main layout1200 clearfix">
+      <div class="box-res">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>首页</el-breadcrumb-item>
+          <el-breadcrumb-item>
+            <a href="/">首页</a>
+          </el-breadcrumb-item>
           <el-breadcrumb-item>产品列表</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <div class="category-box">
+      <div class="category-box clearfix box-res">
         <div class="category" :class="activeIndex==-1?'avtive':''">
-          <a href="/product_list" :class="activeIndex==-1?'avtive':''">全部</a>
+          <a href="/productList/" :class="activeIndex==-1?'avtive':''">全部</a>
         </div>
         <div
           class="category"
@@ -19,102 +21,116 @@
           :key="index"
           :class="activeIndex-1==index?'avtive':''"
         >
-          <a
-            :href="'/product_list?categoryId='+item.P1"
-            :class="activeIndex-1==index?'avtive':''"
-          >{{item.name}}</a>
+          <a :href="'/productList/'+item.P1" :class="activeIndex-1==index?'avtive':''">{{item.name}}</a>
         </div>
-        <div style="clear:both"></div>
       </div>
-      <div class="case-main">
-        <div
-          v-for="(item, index) in productList"
-          :key="index+10"
-          class="case-box"
-          :class="index==3?'finally':''"
-        >
-          <product_card :product="item"></product_card>
-        </div>
-        <div style="clear:both"></div>
+      <div class="case-main clearfix MT10">
+        <!-- 响应式弹性列表-产品列表 -->
+        <list_flex_res :list="productList" com="product_old"></list_flex_res>
       </div>
       <div class="paging-box">
         <el-pagination
           @current-change="changePageIndex"
           :current-page.sync="pageIndex"
-          :page-size="12"
+          :page-size="8"
           layout="prev, pager, next, jumper"
-          :total="pageCount*12"
+          :total="pageCount*8"
         ></el-pagination>
       </div>
-      <div style="clear:both"></div>
     </div>
-    <hr />
-    <floor_nav></floor_nav>
+    <page_foot></page_foot>
     <contact_right></contact_right>
   </div>
 </template>
 
 <script>
-import head_nav from "@/components/head_nav.vue";
-import floor_nav from "@/components/floor_nav.vue";
+import page_head from "@/components/page_head.vue";
+import page_foot from "@/components/page_foot.vue";
 import contact_right from "@/components/contact_right.vue";
-import product_card from "@/components/product_card.vue";
+
+import list_flex_res from "@/components/list_flex_res.vue";
 import axios from "axios";
 export default {
-  components: { head_nav, contact_right, floor_nav, product_card },
+  // validate({ params }) {
+  //   return /^\d+$/.test(params.id);
+  // },
+  components: {
+    page_head,
+    contact_right,
+    page_foot,
+
+    list_flex_res
+  },
   // 该方法在页面跳转进此路由触发
   // 触发vuex中的action方法
   // 缓存页面所需数据
-  async asyncData({ route }) {
+  async asyncData({ route, params, payload }) {
+    console.log("payload:", payload);
+    console.log("params:", params);
+    console.log("route:", route);
     let productData = await axios({
       method: "post",
-      url: "http://120.76.160.41:3000/crossList?page=longting_product",
+      url: `${global.PUB.domain}/crossList?page=longting_product`,
       data: {
         pageSize: 12,
         findJson: {
           showToSite: "1",
-          categoryId: route.query.categoryId
+          categoryId: params.id
         },
         sortJson: { P1: 1 }
       }
     });
-    let categoryData = await axios({
+    let {
+      data: { list: categoryList }
+    } = await axios({
       method: "post",
-      url: "http://120.76.160.41:3000/crossList?page=longting_product_category",
+      url: `${global.PUB.domain}/crossList?page=longting_product_category`,
       data: {
         pageSize: 100,
         sortJson: { P1: 1 }
       }
     });
-    return {categoryList:categoryData.data.list,productList:productData.data.list,pageCount:productData.data.page.pageCount}
+    let currentCategory = { name: "" };
+    //如果分类id存在
+    if (params.id) {
+      currentCategory = categoryList.find(
+        doc => doc.P1 == params.id
+      );
+    }
+
+    return {
+      currentCategory,
+      categoryList,
+      productList: productData.data.list,
+      pageCount: productData.data.page.pageCount
+    };
   },
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
-  head(){
-      return{
-          title:'深圳中央空调-产品分类列表',
-          meta:[
-              {hid:'description',name:'nesw1',content:"这是一个SEO"}
-          ]
-      }
+  head() {
+    return {
+      title: `${this.currentCategory.name||"全部产品"}-产品列表-深圳龙庭空调制冷有限公司`
+      // meta: [{ hid: "description", name: "nesw1", content: "" }]
+    };
   },
   data() {
     return {
-      activeIndex: this.$route.query.categoryId || -1,
+      activeIndex: this.$route.params.id || -1,
       pageIndex: 1
     };
   },
   methods: {
     // 修改当前分页请求axios获取数据
     async changePageIndex() {
+      console.log("this.$route.params.id:", this.$route.params.id);
       let { data } = await axios({
         method: "post",
-        url: "http://120.76.160.41:3000/crossList?page=longting_product",
+        url: `${global.PUB.domain}/crossList?page=longting_product`,
         data: {
           pageSize: 12,
           pageIndex: this.pageIndex,
           findJson: {
             showToSite: "1",
-            categoryId: this.$route.query.categoryId
+            categoryId: this.$route.params.id
           },
           sortJson: { P1: 1 }
         }
@@ -128,7 +144,6 @@ export default {
 
 <style scoped>
 a {
-  text-decoration: none;
   color: #666;
 }
 .product-banner {
@@ -141,7 +156,7 @@ a {
   color: white;
 }
 .product-main {
-   padding: 10px 0;
+  padding: 10px 0;
 }
 .category-box {
   margin-top: 10px;
@@ -150,7 +165,7 @@ a {
   float: left;
   line-height: 40px;
   padding: 0 10px;
-  margin-right: 20px;
+  margin: 0 15px 10px 0;
   background-color: #eeeeee;
   cursor: pointer;
 }

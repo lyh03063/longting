@@ -1,0 +1,125 @@
+<template>
+  <div>
+    <page_head></page_head>
+    <div class="main-box layout1200">
+      <div class=" box-res  MB10">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item>
+            <a href="/">首页</a>
+          </el-breadcrumb-item>
+          <el-breadcrumb-item>工程案例</el-breadcrumb-item>
+          <el-breadcrumb-item>案例详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+      <div class="case-box">
+          <!-- doc:{{doc}} -->
+        <div class="case-title">{{doc.title}}</div>
+        <div class="time-box">时间：2019年</div>
+        <div class="img-box MT10">
+          <img :src="doc.imgSrc" class="image" />
+        </div>
+        <div class="case-detail" v-html="doc._detail"></div>
+      </div>
+    </div>
+    <page_foot></page_foot>
+    <contact_right></contact_right>
+  </div>
+</template>
+
+<script>
+
+import page_head from "@/components/page_head.vue";
+import page_foot from "@/components/page_foot.vue";
+import contact_right from "@/components/contact_right.vue";
+import axios from "axios";
+export default {
+  components: { page_head, contact_right, page_foot },
+  async asyncData({ route,params }) {
+    let { data } = await axios({
+      //请求接口
+      method: "post",
+      url: `${global.PUB.domain}/info/commonDetail`,
+      data: {
+        _id: params.id,
+        _systemId: global.PUB._systemId
+      } //传递参数
+    });
+    let doc = data.doc;
+    doc.imgSrc=global.lodash.get(doc, `album[0].url`)
+
+  
+    return { doc: doc };
+  },
+  // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
+  head() {
+    return {
+      title: `${this.doc.title}-工程案例详情-深圳龙庭空调制冷有限公司`
+      // meta: [{  name: "description",
+      // content: ""
+      // }]
+    };
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+  created() {},
+  mounted() {
+
+
+  }
+};
+</script>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+.main-box {
+  padding: 10px 0;
+}
+.case-box {
+  border: 1px solid #eeeeee;
+  padding: 10px 20px;
+}
+.case-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+}
+.time-box {
+  color: gray;
+  font-size: 14px;
+  line-height: 30px;
+  border-bottom: 1px dashed #eeeeee;
+}
+.img-box {
+
+  width: 720px;
+  height: 540px;
+}
+/*屏幕宽度小于640px*/
+
+@media screen and (max-width: 640px) {
+    
+    .img-box{
+        width: 100%;
+        height:auto;
+    }
+
+}
+.image {
+  width: 100%;
+  height: 100%;
+}
+.case-detail >>> p {
+  font-size: 16px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+}
+.case-detail {
+  margin: 10px 0;
+}
+</style>

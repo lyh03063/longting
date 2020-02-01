@@ -1,6 +1,6 @@
 # longting
 
-> My outstanding Nuxt.js project
+My outstanding Nuxt.js project
 
 ## Build Setup
 
