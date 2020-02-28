@@ -15,6 +15,7 @@
 </template>
 
 <script>
+let T;
 export default {
   props: {
     height:{
@@ -33,6 +34,9 @@ export default {
     };
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   created() {},
  
 };

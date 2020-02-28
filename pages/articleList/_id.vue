@@ -41,6 +41,7 @@ import page_head from "@/components/page_head.vue";
 import page_foot from "@/components/page_foot.vue";
 import contact_right from "@/components/contact_right.vue";
 import axios from "axios";
+let T;
 export default {
   components: { page_head, contact_right, page_foot },
   async asyncData() {
@@ -76,12 +77,15 @@ export default {
         data: {
           pageSize: 12,
           sortJson: { P1: 1 },
-          pageIndex: this.pageIndex
+          pageIndex: T.pageIndex
         }
       });
-      this.articleList = data.list;
+      T.articleList = data.list;
     }
-  }
+  },
+  beforeCreate() {
+    T = this;
+  },
 };
 </script>
 

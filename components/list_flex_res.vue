@@ -13,6 +13,7 @@ import card_case from "@/components/card/case.vue";
 import partner from "@/components/card/partner.vue";
 import case_old from "@/components/card/case_old.vue";
 import product_old from "@/components/card/product_old.vue";
+let T;
 export default {
   props: {
     col: {
@@ -33,9 +34,12 @@ export default {
     };
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   created() {
-    let classCol=`n-col-${this.col}`
-    this.arrClass.push(classCol)
+    let classCol=`n-col-${T.col}`
+    T.arrClass.push(classCol)
 
 
 

@@ -7,7 +7,7 @@
           <img class="logo-img" alt="深圳龙庭中央空调" src="//www.dmagic.cn/images/IconS/IconS_2568.png" />
         </a>
 
-        <a class="logo-text-link" href="/" >龙庭中央空调</a>
+        <a class="logo-text-link" href="/">龙庭中央空调</a>
       </div>
       <button
         type="button"
@@ -53,12 +53,13 @@
   
 
 <script>
+let T;
 export default {
   data() {
     return {
       menuMode: "horizontal", //菜单模式
       activeIndex: "1",
-      styleMenuBox:{display:'none'},
+      styleMenuBox: { display: "none" },
 
       listMenu: [
         { name: "首页", url: "/" },
@@ -98,48 +99,50 @@ export default {
       isShowMenu: true //是否显示移动端菜单
     };
   },
- 
+
   watch: {
     menuMode: {
       async handler(newVal, oldVal) {
         console.log("menuMode changed");
-        let flagShowMobileMenuOld = this.isShowMenu;
-        this.isShowMenu = false;
-        await this.$nextTick(); //延迟到视图更新
-        this.isShowMenu = flagShowMobileMenuOld;
+        let flagShowMobileMenuOld = T.isShowMenu;
+        T.isShowMenu = false;
+        await T.$nextTick(); //延迟到视图更新
+        T.isShowMenu = flagShowMobileMenuOld;
       }
     }
   },
 
   methods: {
-   
     swithMobileMenu: function() {
       //函数：{移动端菜单开关函数}
-      this.isShowMenu = !this.isShowMenu;
+      T.isShowMenu = !T.isShowMenu;
     },
-     
+
     //函数：{响应界面函数}
     responseUI() {
       let { clientWidth } = document.body;
       if (clientWidth >= 640) {
         //Q1:{页面宽度}大于640
-        this.menuMode = "horizontal";
-        this.isShowMenu=true;
+        T.menuMode = "horizontal";
+        T.isShowMenu = true;
       } else {
         //Q2:{页面宽度}小于640
-        this.menuMode = "vertical";
-        this.isShowMenu=false;
+        T.menuMode = "vertical";
+        T.isShowMenu = false;
       }
     }
+  },
+  beforeCreate() {
+    T = this;
   },
   created() {},
   mounted() {
     //事件绑定：窗口变化
     window.addEventListener("resize", () => {
-      this.responseUI(); //调用：{响应界面函数}
+      T.responseUI(); //调用：{响应界面函数}
     });
-    this.responseUI(); //调用：{响应界面函数}
-    this.styleMenuBox={display:"block"}//移除菜单隐藏样式
+    T.responseUI(); //调用：{响应界面函数}
+    T.styleMenuBox = { display: "block" }; //移除菜单隐藏样式
   }
 };
 </script>
@@ -151,6 +154,11 @@ export default {
 }
 
 @media screen and (max-width: 640px) {
+  /* 增大移动端下的超链接出发点 */
+  .menu-box >>> .el-menu-item a {
+    display: inline-block;
+    width: 80%;
+  }
   .menu-box {
     clear: both;
     width: 100%;
@@ -162,7 +170,6 @@ export default {
 }
 
 a {
-
   color: #666;
 }
 .home-head {
@@ -189,7 +196,9 @@ a {
   overflow: hidden;
   float: left;
 }
-
+.page-head-box {
+  background-color: #fff;
+}
 @media screen and (max-width: 640px) {
   /*屏幕宽度小于640px*/
   .menu-hide {
@@ -205,7 +214,7 @@ a {
     float: left;
     margin-right: 10px;
   }
- 
+
   .logo-text-link:link,
   .logo-text-link:visited {
     color: #666;
@@ -219,8 +228,6 @@ a {
     display: block;
     float: right;
   }
-  
- 
 }
 
 @media screen and (min-width: 640px) {
@@ -244,9 +251,6 @@ a {
     line-height: 24px;
     display: inline-block;
   }
- 
- 
-
 }
 
 /****************************盛联页头样式-END****************************/

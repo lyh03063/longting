@@ -1,10 +1,20 @@
 import axios from "axios";
 import lodash from "lodash";
 
-let domain = "http://120.76.160.41:3000";
+let domain = "https://www.dmagic.cn";
+
+
+let port = 30011;//生成环境使用
+if (process.env.NODE_ENV == "development") {//如果是开发环境
+  port = 30012;
+}
 
 export default {
   mode: 'universal',
+  server: {
+    port: port, // default: 3000
+    host: '0.0.0.0' // default: localhost
+  },
   /*
   ** Headers of the page
   */
@@ -20,10 +30,21 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: 'http://www.dmagic.cn/images/IconS/IconS_2568.png' },
       // { rel: 'stylesheet', href: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css' },
       { rel: 'stylesheet', href: 'http://qn-static.dmagic.cn/element-ui@2.12.0/index.css' },
-      { rel: 'stylesheet', href: 'http://qn-static.dmagic.cn/public.1.0.2.css' }
+      { rel: 'stylesheet', href: 'http://qn-static.dmagic.cn/public.1.0.5.css' },
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/vant@2.4/lib/index.css' }
     ],
     script: [
-      // { src: 'http://qn-static.dmagic.cn/util.1.0.6.js'},
+      // { src: 'https://cdn.jsdelivr.net/npm/vant@2.4/lib/vant.min.js',  defer: true },
+      // { src: 'http://qn-static.dmagic.cn/polyfill.min.js' },
+      // { src: 'http://qn-static.dmagic.cn/vue@2.6.10/vue.js' },
+      // { src: 'http://qn-static.dmagic.cn/vuex@3.0.1/vuex.min.js' },
+      // { src: 'http://qn-static.dmagic.cn/vue-router@3.0.1/vue-router.min.js' },
+      // { src: 'http://qn-static.dmagic.cn/axios@0.15.3/axios.min.js' },
+      // { src: 'http://qn-static.dmagic.cn/lodash@4.17.5/lodash.min.js' },
+      // // { src: 'http://qn-static.dmagic.cn/element-ui/element-ui.js' },
+      // { src: 'http://qn-static.dmagic.cn/util.1.2.3.js' },
+      // { src: 'http://qn-static.dmagic.cn/config_base_sys_longting.1.0.3.js' },
+      // { src: 'http://qn-static.dmagic.cn/config_detail.1.0.4.js' },
 
     ]
   },
@@ -40,9 +61,24 @@ export default {
       src: '~plugins/ElementUI',
       ssr: true,
     },
+    {
+      src: '~plugins/vant',
+      ssr: true,
+    },
     //这个lodash没什么用
     { src: '~plugins/lodash.js', ssr: false },
-    { src: '~assets/js/util.js', ssr: true },//服务端util****
+    { src: '~assets/js/public.js', ssr: true },//服务端public
+    { src: '~assets/js/util.1.2.2.js', ssr: true },//服务端util****
+    { src: '~assets/js/public_after.js', ssr: true },//public_after
+
+    //  { src: 'http://qn-static.dmagic.cn/config_detail.1.0.4.js', ssr: false },//服务端util****
+
+    //dm组件库用于nuxt项目服务端渲染，失败，提示MIX undefinded
+    // {
+    //   src: '~plugins/dmagic-components',
+    //   ssr: true,
+    // },
+
     // { src: 'http://qn-static.dmagic.cn/util.1.1.8.js', ssr: true },//服务端util****
   ],
   css: [

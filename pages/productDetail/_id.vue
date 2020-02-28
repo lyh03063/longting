@@ -43,6 +43,7 @@ import page_head from "@/components/page_head.vue";
 import page_foot from "@/components/page_foot.vue";
 import contact_right from "@/components/contact_right.vue";
 import axios from "axios";
+let T;
 export default {
   validate({ params }) {
     return /^\d+$/.test(params.id);
@@ -72,7 +73,7 @@ export default {
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
   head() {
     return {
-      title: `${this.productDetail.name}-${this.productDetail.model}-产品详情-深圳龙庭空调制冷有限公司`
+      title: `${T.productDetail.name}-${T.productDetail.model}-产品详情-深圳龙庭空调制冷有限公司`
       // meta: [{ hid: "description", name: "nesw1", content: "" }]
     };
   },
@@ -82,10 +83,13 @@ export default {
     };
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   mounted() {
-    this.categoryList.forEach(item => {
-      if (item.P1 == this.productDetail.categoryId) {
-        this.categoryName = item.name;
+    T.categoryList.forEach(item => {
+      if (item.P1 == T.productDetail.categoryId) {
+        T.categoryName = item.name;
       }
     });
   }

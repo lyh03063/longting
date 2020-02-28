@@ -5,7 +5,7 @@
 </template>
 
 <script>
-
+let T;
 export default {
   components: {
    
@@ -22,11 +22,14 @@ export default {
       return{
           title:'xxxx',
           meta:[
-              {hid:'description',name:'nesw1',content:"家用中央空调报价-安装-深圳龙庭空调"}
+              {hid:'description',name:'nesw1',content:"中央空调清洗-安装-深圳龙庭空调"}
           ]
       }
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   created() {},
   mounted() {
   }

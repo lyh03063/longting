@@ -7,12 +7,13 @@
       </div>
     </div>
     <div class="content-box clearfix" v-bind="cf_content_box">
-      <slot ></slot>
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
+let T;
 export default {
   props: {
     title: {},
@@ -23,7 +24,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          style: { } 
+          style: {}
         };
       }
     }
@@ -33,20 +34,20 @@ export default {
     return {};
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   created() {
     //调用：{给一个对象设置默认属性函数}
-    global.util.setObjDefault(this.cf_content_box, { style: { padding: "0" } });
+    global.util.setObjDefault(T.cf_content_box, { style: { padding: "0" } });
 
-    console.log("this.cf_content_box:", this.cf_content_box);
-
-   
+    console.log("T.cf_content_box:", T.cf_content_box);
   }
 };
 </script>
 
 <style scoped>
 a {
-  
   color: #666;
 }
 
@@ -67,11 +68,11 @@ a {
 }
 
 @media screen and (max-width: 640px) {
-  .title-bar{
-    padding: 0 10px
+  .title-bar {
+    padding: 0 10px;
   }
-  .content-box{
-    padding: 0 10px
+  .content-box {
+    padding: 0 10px;
   }
 }
 </style>

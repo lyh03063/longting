@@ -50,6 +50,8 @@ import contact_right from "@/components/contact_right.vue";
 
 import list_flex_res from "@/components/list_flex_res.vue";
 import axios from "axios";
+axios.defaults.withCredentials = true//携带cookie
+let T;
 export default {
   // validate({ params }) {
   //   return /^\d+$/.test(params.id);
@@ -108,35 +110,38 @@ export default {
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
   head() {
     return {
-      title: `${this.currentCategory.name||"全部产品"}-产品列表-深圳龙庭空调制冷有限公司`
+      title: `${T.currentCategory.name||"全部产品"}-产品列表-深圳龙庭空调制冷有限公司`
       // meta: [{ hid: "description", name: "nesw1", content: "" }]
     };
   },
   data() {
     return {
-      activeIndex: this.$route.params.id || -1,
+      activeIndex: T.$route.params.id || -1,
       pageIndex: 1
     };
   },
   methods: {
     // 修改当前分页请求axios获取数据
     async changePageIndex() {
-      console.log("this.$route.params.id:", this.$route.params.id);
+      console.log("T.$route.params.id:", T.$route.params.id);
       let { data } = await axios({
         method: "post",
         url: `${global.PUB.domain}/crossList?page=longting_product`,
         data: {
           pageSize: 12,
-          pageIndex: this.pageIndex,
+          pageIndex: T.pageIndex,
           findJson: {
             showToSite: "1",
-            categoryId: this.$route.params.id
+            categoryId: T.$route.params.id
           },
           sortJson: { P1: 1 }
         }
       });
-      this.productList = data.list;
+      T.productList = data.list;
     }
+  },
+  beforeCreate() {
+    T = this;
   },
   created() {}
 };

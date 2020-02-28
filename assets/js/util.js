@@ -10,7 +10,7 @@ if (typeof (window) === "undefined") {//如果{000}000
 }
 WIN.PUB = {}
 WIN.lodash = lodash//ladash加入全局变量
-WIN.PUB.domain="http://120.76.160.41:3000"
+WIN.PUB.domain="https://www.dmagic.cn"
  //WIN.PUB.domain = "http://localhost:3000"
 //WIN.PUB.domain = 'http://test.dmagic.cn'
 // WIN.PUB.urlUpload = `${PUB.domain}/api_third_part/qiniu_upload?scope=test`

@@ -46,7 +46,7 @@ import page_foot from "@/components/page_foot.vue";
 import contact_right from "@/components/contact_right.vue";
 import axios from "axios";
 
-
+ let T;
 export default {
   components: {
     list_flex_res,
@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       hBanner: null, //banner高度
-      listBanner: this.listBannerS
+      listBanner: T.listBannerS
     };
   },
 
@@ -111,22 +111,25 @@ export default {
       let { clientWidth } = document.body;
       if (clientWidth >= 640) {
         //Q1:{页面宽度}大于640
-        this.listBanner = this.listBannerB;
-        this.hBanner = `480px`;
+        T.listBanner = T.listBannerB;
+        T.hBanner = `480px`;
       } else {
         //Q2:{页面宽度}小于640
-        this.listBanner = this.listBannerS;
-        this.hBanner = `180px`;
+        T.listBanner = T.listBannerS;
+        T.hBanner = `180px`;
       }
     }
   },
+  beforeCreate() {
+    T = this;
+  },
   created() {},
   mounted() {
-    this.setBanner(); //调用：{设置banner图函数}
+    T.setBanner(); //调用：{设置banner图函数}
     //事件绑定：窗口变化
     window.addEventListener("resize", () => {
       console.log("resize####");
-      this.setBanner(); //调用：{设置banner图函数}
+      T.setBanner(); //调用：{设置banner图函数}
     });
 
    

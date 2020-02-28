@@ -32,6 +32,7 @@ import page_head from "@/components/page_head.vue";
 import page_foot from "@/components/page_foot.vue";
 import contact_right from "@/components/contact_right.vue";
 import axios from "axios";
+let T;
 export default {
   components: { page_head, contact_right, page_foot },
   async asyncData({ route,params }) {
@@ -53,7 +54,7 @@ export default {
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
   head() {
     return {
-      title: `${this.doc.title}-工程案例详情-深圳龙庭空调制冷有限公司`
+      title: `${T.doc.title}-工程案例详情-深圳龙庭空调制冷有限公司`
       // meta: [{  name: "description",
       // content: ""
       // }]
@@ -63,6 +64,9 @@ export default {
     return {};
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   created() {},
   mounted() {
 

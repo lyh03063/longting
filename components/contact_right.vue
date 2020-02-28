@@ -28,12 +28,16 @@
 </template>
 
 <script>
+let T;
 export default {
   props: ["productList"],
   data() {
     return {};
   },
   methods: {},
+  beforeCreate() {
+    T = this;
+  },
   created() {}
 };
 </script>
