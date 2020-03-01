@@ -7,24 +7,20 @@
           <div class="TAC PT10 PB10 FS16 FWB">购物车</div>
 
           <ul class="n-flex-ul MB10" v-if="hasGoods">
-            <li v-for="(item) in objGoodsCart.listGoods" :key="item._id+item.idSpecChain">
+            <li v-for="(item,index) in objGoodsCart.listGoods" :key="item._id+item.idSpecChain">
               <b class="img-box">
                 <el-link type="primary" :href="`/goods/${item._id}`">
                   <img :src="item.imgSrc" alt />
                 </el-link>
               </b>
               <i>
-                <p class>
+                <p class="MB6">
                   {{ item.title }}
-                  <a
-                    class="FR MR10 n-a"
-                    href="javascript:;"
-                    @click="removeGoods(item)"
-                  >移除商品</a>
+                 
                 </p>
-                <p class>规格：{{ item.nameSpecChain }}</p>
-                <p class>
-                  单价：{{ item.priceSell }}元 &nbsp;
+                <p class="MB6">规格：{{ item.nameSpecChain }}</p>
+                <p class="MB6">
+                 
                   <el-input-number
                     @change="changeCount(item)"
                     v-model="item.count"
@@ -32,10 +28,24 @@
                     :max="999"
                     label="描述文字"
                     size="mini"
-                  ></el-input-number>&nbsp;&nbsp;小计：
-                  <span class="C_f30">{{ item.priceTotal }}</span>元
+                  ></el-input-number>
                 </p>
-                <p class></p>
+
+                <div class="DPF">
+                <div class="FX1" >
+                
+               <span class="FM4">￥{{ item.priceSell }}</span> &nbsp;
+                小计：<span class="FM4 C_f30">￥{{ item.priceTotal }}</span></div>
+                
+
+
+                 <a
+                    class="W40  FS12 n-a"
+                    href="javascript:;"
+                    @click="removeGoods(index)"
+                  >移除</a>
+                 
+                </div>
               </i>
             </li>
           </ul>

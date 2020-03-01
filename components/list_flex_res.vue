@@ -13,6 +13,7 @@ import card_case from "@/components/card/case.vue";
 import partner from "@/components/card/partner.vue";
 import case_old from "@/components/card/case_old.vue";
 import product_old from "@/components/card/product_old.vue";
+import goods from "@/components/card/goods.vue";
 let T;
 export default {
   props: {
@@ -25,7 +26,7 @@ export default {
 
     list: {}
   },
-  components: { card_case,case_old, partner,product_old },
+  components: { card_case,case_old, partner,product_old,goods },
   data() {
     return {
       arrClass:[],

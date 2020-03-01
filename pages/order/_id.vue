@@ -15,7 +15,7 @@
         <div class="MB15 pannel">订单状态：{{doc.payStatus_text}}</div>
         <div class="MB15 pannel">
           收货地址：{{doc.address}}
-          <br />服务时间：国家宣布疫情结束后的10天内
+        
         </div>
         <div class="MB15 pannel">
           商品列表
@@ -28,9 +28,9 @@
               </b>
               <i>
                 <p class>{{ item.title }}</p>
-                <p class>单价：{{ item.priceSell }}元</p>
-                <p class>数量：{{ item.count }}</p>
-                <p class>小计：{{ item.priceTotal }}元</p>
+                <p class>单价：￥{{ item.priceSell }} ×{{ item.count }}</p>
+                <p class>小计：￥{{ item.priceTotal }}</p>
+                <p class="FS12 " v-if="item.deliveryDesc" v-html="item.deliveryDesc"></p>
               </i>
             </li>
           </ul>

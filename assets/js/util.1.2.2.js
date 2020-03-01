@@ -954,7 +954,9 @@ util.handleGDataList = function (list) {
             title: lodash.get(doc, `targetDoc.title`),
             link: lodash.get(doc, `targetDoc.link`),
             alias: lodash.get(doc, `targetDoc.alias`),
-            imgSrc: lodash.get(doc, `targetDoc.album[0].url`)
+            imgSrc: lodash.get(doc, `targetDoc.album[0].url`),
+            priceMarket: lodash.get(doc, `targetDoc.priceMarket`),
+            priceSell: lodash.get(doc, `targetDoc.priceSell`)
         };
     });
 };

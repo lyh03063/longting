@@ -10,12 +10,13 @@
           <el-breadcrumb-item>商品详情</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
+     
 
       <goods_specs_front v-bind="cfGoodsSpecs"></goods_specs_front>
 
       <div class="case-box">
         <!-- doc:{{doc}} -->
-        
+
         <el-row :gutter="2">
           <el-col :span="24" :sm="12">
             <div class="img-box MT10">
@@ -26,12 +27,15 @@
             <ul class="n-flex-ul">
               <li>
                 <!-- <b>销售价：</b> -->
-                <i class="FM4 C_f00">￥ <span class=" FS20 FM4">{{getGoodsPrice(doc)}}</span></i>
+                <i class="FM4 C_f00">
+                  ￥
+                  <span class="FS20 FM4">{{getGoodsPrice(doc)}}</span>
+                </i>
                 <!-- .priceSell -->
               </li>
               <li>
                 <!-- <b>市场价：</b> -->
-                <div class="LH30 MR5" >价格</div>
+                <div class="LH30 MR5">价格</div>
                 <i class="price-market">￥{{doc.priceMarket}}</i>
               </li>
               <li>
@@ -39,15 +43,21 @@
               </li>
               <li>
                 <!-- <b>市场价：</b> -->
-                <i class="">优惠 <el-tag type="danger" size="small">满1000减100元</el-tag></i>
+                <i class>
+                  优惠
+                  <el-tag type="danger" size="small">满1000减100元</el-tag>
+                </i>
+              </li>
+              <li v-if="doc.deliveryDesc">
+                <span class="C_f60 FS12" v-html="doc.deliveryDesc"></span>
               </li>
             </ul>
-
           </el-col>
         </el-row>
         <div class="case-detail doneDetailImg" v-html="doc._detail"></div>
       </div>
     </div>
+
     <wx_user_bar></wx_user_bar>
     <!-- <page_foot></page_foot> -->
     <contact_right></contact_right>
@@ -119,8 +129,6 @@ export default {
   },
   async mounted() {
     console.log("T:##", T);
-
-   
   }
 };
 </script>
@@ -136,7 +144,6 @@ a {
   padding: 10px 20px;
 }
 .case-title {
-
   font-size: 18px;
   font-weight: 700;
   line-height: 30px;
@@ -169,6 +176,4 @@ a {
 .price-market {
   text-decoration: line-through;
 }
-
-
 </style>

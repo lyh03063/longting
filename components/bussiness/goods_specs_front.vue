@@ -7,6 +7,7 @@
     <div class>dictSpecPrice: {{dictSpecPrice}}</div>-->
 
     <div class="n-cover" v-if="isShowSpecPannel" @click="isShowSpecPannel=false"></div>
+
     <div class="n-bottom-bar" style="z-index:201" v-if="isShowSpecPannel">
       <div class="MB10 DPF">
         <img class="goods_spec_img MR6" :src="imgSrcSpec" alt />
@@ -17,13 +18,13 @@
             <i class="n-icon-money FS18 C_f00">{{priceSpec}}</i>
           </div>
         </div>
-        <i class="el-icon-close FS18 Cur1 H50   " style="padding:10px" @click="isShowSpecPannel=false"></i>
+        <i class="el-icon-close FS18 Cur1 H50" style="padding:10px" @click="isShowSpecPannel=false"></i>
       </div>
       <div class="spec-box MB10" v-for="(specEach,i) in IN_listSpecs" :key="specEach.__id">
         <div class v-if="isShowSpec(specEach)">
           <div class="spec-name">{{specEach.name}}</div>
           <el-button
-          class="MB5"
+            class="MB5"
             size="small"
             round
             plain
@@ -40,11 +41,25 @@
           <el-input-number size="small" v-model="countBuy" :min="1" :max="999" label="描述文字"></el-input-number>
         </span>
       </div>
-      <el-button type="primary" @click="addCart" v-if="typeBuy=='cart'">确定加入购物车</el-button>
-      <el-button type="primary" @click="buy" v-if="typeBuy=='buy'">确定直接购买</el-button>
+      <!-- <el-button type="primary" @click="addCart" v-if="typeBuy=='cart'">确定加入购物车</el-button>
+      <el-button type="primary" >确定直接购买</el-button> -->
+      <van-button type="info" size="large" @click="addCart" v-if="typeBuy=='cart'">确定加入购物车</van-button>
+      <van-button type="info" size="large" @click="buy" v-if="typeBuy=='buy'">确定直接购买</van-button>
     </div>
-
-    <div class="n-bottom-bar DPF">
+    <div class="n-bottom-bar H50">
+      <van-goods-action>
+        <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" />
+        <van-goods-action-icon
+          icon="cart-o"
+          text="购物车"
+          :info="countCartGoods?countCartGoods:null"
+          @click="goCart"
+        />
+        <van-goods-action-button type="warning" text="加入购物车" @click="showPannel('cart')" />
+        <van-goods-action-button type="danger" text="立即购买" @click="showPannel('buy')" />
+      </van-goods-action>
+    </div>
+    <!-- <div class="n-bottom-bar DPF">
       <a class="ML100 MT10" href="/user/cart" style="flex:1">
         <el-badge :value="countCartGoods" :max="99" class="item MR20" :hidden="countCartGoods==0">
           <i class="el-icon-shopping-cart-2 FS24"></i>
@@ -52,9 +67,9 @@
       </a>
       <div class>
         <el-button size="normal" type="primary" @click="showPannel('cart')">加入购物车</el-button>
-        <!-- <el-button size="normal" @click="showPannel('buy')">直接购买</el-button> -->
+        <el-button size="normal" @click="showPannel('buy')">直接购买</el-button>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -72,7 +87,7 @@ export default {
     return {
       typeBuy: "", //购买方式
       isShowSpecPannel: false, //是否显示规格选择
-      countCartGoods: 0, //购物车商品种数
+      countCartGoods: null, //购物车商品种数
       countBuy: 1,
 
       imgSrcSpec: "",
@@ -86,6 +101,10 @@ export default {
     };
   },
   methods: {
+    //函数：{跳转到购物车函数}
+    goCart: function(typeBuy) {
+      window.location.href = "/user/cart";
+    },
     //函数：{返回是否显示规格的逻辑标记的函数}
     isShowSpec(specEach) {
       let flag = true;
@@ -131,6 +150,24 @@ export default {
       let objGoodsCart = util.getLocalStorageObj("objGoodsCart");
       objGoodsCart = objGoodsCart || { listGoods: [] };
       T.countCartGoods = objGoodsCart.listGoods.length;
+    },
+    //函数：{点击购买函数}
+    buy() {
+      if (T.isCompleteSelected()) {
+        //Q1:选择规格完整
+        let objGoods = T.getObjGoods(); //调用：{获取当前商品对象函数}
+        let orderData = util.getLocalStorageObj("orderData") || {};
+        Object.assign(orderData, {
+          priceOrder: objGoods.priceTotal,
+          listGoods: [objGoods]
+        }); //合并对象
+        util.setLocalStorageObj("orderData", orderData); //调用：{设置一个对象到LocalStorage}
+        window.location.href = "/user/confirm_order?type=direct_buy";
+      } else {
+        //Q2:选择规格不完整
+
+        T.$$msg({ type: "error", message: "请选择完整规格" });
+      }
     },
     //函数：{加入购物车函数}
     addCart: function() {
@@ -180,7 +217,7 @@ export default {
     },
     //函数：{获取当前商品对象函数}
     getObjGoods: function() {
-      let { _id, title } = T.docGoods;
+      let { _id, title, deliveryDesc } = T.docGoods;
       let objGoods = {
         _id,
         idSpecChain: FN.getIdSpecChian(T.arrSpecSelected), //调用：{获取规格链id函数}
@@ -190,21 +227,12 @@ export default {
         count: T.countBuy,
         priceSell: T.priceSpec,
         priceTotal: T.priceSpec * T.countBuy,
-        arrSpec: T.arrSpecSelected
+        arrSpec: T.arrSpecSelected,
+        deliveryDesc
       };
       return objGoods;
     },
-    //函数：{点击购买函数}
-    buy() {
-      if (T.isCompleteSelected()) {
-        //Q1:选择规格完整
-        T.getObjGoods(); //调用：{获取当前商品对象函数}
-      } else {
-        //Q2:选择规格不完整
 
-        T.$$msg({ type: "error", message: "请选择完整规格" });
-      }
-    },
     //函数：{判断规格是否选择完整的函数}
     isCompleteSelected() {
       let flag = T.arrSpecSelected.every(doc => !!doc.objSOp);
@@ -346,6 +374,6 @@ export default {
 }
 
 .n-bottom-bar {
-    box-shadow: 2px 2px 10px #999;
+  box-shadow: 2px 2px 10px #999;
 }
 </style>

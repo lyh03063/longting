@@ -2,30 +2,33 @@
   <div class>
     <!-- 导航栏组件 -->
     <page_head></page_head>
+    <!-- <div class>listGoods:{{listGoods}}</div> -->
 
     <!-- banner轮播图 -->
     <banner class="MB20" :list="listBanner" :height="hBanner"></banner>
-
+    <pannel class="layout1200 MB20" title="推荐商品" >
+      <!-- 响应式弹性列表-商品列表 -->
+      <list_flex_res class="MT20" :list="listGoods" com="goods"></list_flex_res>
+    </pannel>
     <pannel class="layout1200 MB20" title="空调工程案例" link_more="/projectCaseList">
       <!-- 响应式弹性列表-工程案列 -->
-      <list_flex_res  class="MT20"  :list="caseList" com="case_old"></list_flex_res>
+      <list_flex_res class="MT20" :list="caseList" com="case_old"></list_flex_res>
     </pannel>
 
     <pannel class="layout1200 MB20" title="产品中心" link_more="/productList">
       <!-- 响应式弹性列表-产品列表 -->
-      <list_flex_res  class="MT20"  :list="productList" com="product_old"></list_flex_res>
+      <list_flex_res class="MT20" :list="productList" com="product_old"></list_flex_res>
     </pannel>
 
     <pannel class="layout1200 MB20" title="合作伙伴">
       <!-- 响应式弹性列表-合作伙伴 -->
-      <list_flex_res  class="MT10"  :list="partnerList" com="partner" col="5"></list_flex_res>
+      <list_flex_res class="MT10" :list="partnerList" com="partner" col="5"></list_flex_res>
     </pannel>
 
     <!-- 底部导航栏组件 -->
     <page_foot></page_foot>
     <!-- 右侧联系我们组件 -->
     <contact_right></contact_right>
-    
   </div>
 </template>
 
@@ -39,7 +42,7 @@ import contact_right from "@/components/contact_right.vue";
 import list_flex_res from "@/components/list_flex_res.vue";
 
 import axios from "axios";
- let T;
+let T;
 export default {
   components: {
     pannel,
@@ -47,7 +50,7 @@ export default {
     banner,
     page_foot,
     contact_right,
-    list_flex_res,
+    list_flex_res
   },
   data() {
     return {
@@ -92,7 +95,7 @@ export default {
       }
     });
 
-    let listBannerB, listBannerS;
+    let listBannerB, listBannerS, listGoods;
     {
       let {
         data: { list }
@@ -104,13 +107,23 @@ export default {
           groupId: "5e34131319c644042851133e"
         }
       });
+
+      console.log("list:#####", list);
       //调用：{根据别名获取子分组数据列表的函数}
       listBannerB = util.getSonListByAlias({ list, alias: "banner_big" });
       listBannerS = util.getSonListByAlias({ list, alias: "banner_small" });
+      listGoods = util.getSonListByAlias({ list, alias: "goods" });
     }
     console.log("listBannerS:$$$$", listBannerS);
 
-    return { listBannerS, listBannerB, caseList, productList, partnerList };
+    return {
+      listBannerS,
+      listBannerB,
+      caseList,
+      productList,
+      partnerList,
+      listGoods
+    };
   },
   computed: {},
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容

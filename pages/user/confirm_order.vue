@@ -2,12 +2,46 @@
   <div>
     <page_head></page_head>
     <div class="main-box layout1200">
-      <div class="out-box">
+      <div class="out-box PT10">
         <!-- {{formData}} -->
+        <!-- type:{{type}} -->
+        <van-panel   title="订单商品" v-if="type=='direct_buy'&&orderData">
+          <ul class="n-flex-ul MB10 BC_fff PL10 PR10">
+            <li v-for="(item) in orderData.listGoods" :key="item._id+item.idSpecChain">
+              <b class="img-box">
+                <el-link type="primary" :href="`/goods/${item._id}`">
+                  <img :src="item.imgSrc" alt />
+                </el-link>
+              </b>
+              <i>
+                <p class="MB6">{{ item.title }}</p>
+                <p class="MB6">规格：{{ item.nameSpecChain }}</p>
+                <p class="MB6">
+                  <el-input-number
+                    @change="changeCount(item)"
+                    v-model="item.count"
+                    :min="1"
+                    :max="999"
+                    label="描述文字"
+                    size="mini"
+                  ></el-input-number>
+                </p>
 
-        <div class="MB15 pannel" v-if="ready">
-          <div class="TAC PT10 PB10 FS16 FWB">填写收货地址及备注</div>
-          <ul class="n-flex-ul">
+                <div class="DPF">
+                  <div class="FX1">
+                    <span class="FM4">￥{{ item.priceSell }}</span> &nbsp;
+                    商品总额：
+                    <span class="FM4 C_f30">￥{{ item.priceTotal }}</span>
+                  </div>
+                </div>
+              </i>
+            </li>
+          </ul>
+        </van-panel>
+
+        <van-panel class="" title="填写收货地址及备注" v-if="ready">
+          <div class="PL10 PR10" >
+              <ul class="n-flex-ul">
             <li>
               <!-- <b>地区选择：</b> -->
               <i>
@@ -40,9 +74,12 @@
           </ul>
           <div class="TAC PT10 PB10">
             <el-button type="primary" :loading="isLoadingPay" v-if="isLoadingPay">请求支付中</el-button>
-            <el-button type="primary" @click="callWxPay" v-else>提交订单</el-button>
+            <!-- <el-button type="primary" @click="callWxPay" v-else>提交订单</el-button> -->
+            <van-button type="info" size="large" @click="callWxPay" v-else>提交订单</van-button>
           </div>
-        </div>
+          </div>
+        
+        </van-panel>
       </div>
       <!-- <wx_user_bar></wx_user_bar> -->
       <!-- <div class>微信支付结果：{{resWXPay}}</div> -->
@@ -78,8 +115,13 @@ export default {
       title: `确认订单-深圳龙庭空调制冷有限公司`
     };
   },
+  async asyncData({ route, params }) {
+    console.log("route:", route);
+    return { type: route.query.type };
+  },
   data() {
     return {
+      orderData: null,
       isLoadingPay: false,
       ready: false,
       arrLevel1: [
@@ -95,6 +137,18 @@ export default {
     };
   },
   methods: {
+    //函数：{购买数量变化函数}
+    changeCount: function(item) {
+      item.priceTotal = item.priceSell * item.count; //更新总价
+      item.priceTotal = util.money(item.priceTotal);
+      let orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
+
+      orderData.priceTotal = item.priceTotal;
+      orderData.priceOrder = item.priceTotal;
+      orderData.listGoods = T.orderData.listGoods;
+
+      util.setLocalStorageObj("orderData", orderData); //调用：{设置一个对象到LocalStorage}
+    },
     //函数：{ajax下订单函数}
     async ajaxOrder() {
       let orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
@@ -170,10 +224,10 @@ export default {
     T = this;
   },
   mounted() {
-    let orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函
+    T.orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
 
-    let { arrArea, addressDetail, remark } = orderData;
-    T.formData = { arrArea, addressDetail, remark };
+    let { arrArea, addressDetail, remark, phone } = T.orderData;
+    T.formData = { arrArea, addressDetail, remark, phone };
     T.ready = true;
   }
 };
