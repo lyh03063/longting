@@ -41,20 +41,20 @@
               <li>
                 <div class="case-title">{{doc.title}}</div>
               </li>
-              <li>
-                <!-- <b>市场价：</b> -->
+              <!-- <li>
+             
                 <i class>
                   优惠
                   <el-tag type="danger" size="small">满1000减100元</el-tag>
                 </i>
-              </li>
+              </li> -->
               <li v-if="doc.deliveryDesc">
                 <span class="C_f60 FS12" v-html="doc.deliveryDesc"></span>
               </li>
             </ul>
           </el-col>
         </el-row>
-        <div class="case-detail doneDetailImg" v-html="doc._detail"></div>
+        <div class="case-detail doneDetailImg n-mobile-img-box" v-html="doc._detail"></div>
       </div>
     </div>
 

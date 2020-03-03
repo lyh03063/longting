@@ -6,7 +6,7 @@
       </div>
        <div class="titlebar ">
         <div class="title MB6" :title="item.title">{{item.title}}</div>
-         <div class="title" :title="item.title"> <span class="C_f30">￥{{item.priceSell}}</span> <span class="C_999 TDEC_LT">￥{{item.priceMarket}}</span></div>
+         <div class="" :title="item.title"> <span class="C_f30">￥{{item.priceSellSection||item.priceSell}}</span> <span class="C_999 TDEC_LT">￥{{item.priceMarket}}</span></div>
       </div>
     </el-card>
   </a>
@@ -30,5 +30,15 @@ export default {
 
 }
 
+  /*屏幕宽度小于640px*/
+  @media screen and (max-width: 640px) {
+    .title{
+      height: 40px;
+      overflow: hidden;
+    }
+    
+
+    
+  }
 
 </style>

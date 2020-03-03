@@ -21,34 +21,34 @@
         <i class="el-icon-close FS18 Cur1 H50" style="padding:10px" @click="isShowSpecPannel=false"></i>
       </div>
       <div class="spec-box MB10" v-for="(specEach,i) in IN_listSpecs" :key="specEach.__id">
-        <div class v-if="isShowSpec(specEach)">
+        <div class="CL1" v-if="isShowSpec(specEach)">
           <div class="spec-name">{{specEach.name}}</div>
-          <el-button
-            class="MB5"
-            size="small"
-            round
-            plain
+          <i
+            class="btn-spec"
+            :class="{'focus':focusItem(i,itemEach.__id)}"
             v-for="(itemEach) in specEach.options"
             :key="itemEach.__id"
             @click="changeItem(itemEach,specEach)"
-            :type="focusItem(i,itemEach.__id)"
-          >{{itemEach.name}}</el-button>
+          >
+            <img :src="itemEach.imgSrc" alt v-if="itemEach.imgSrc" />
+            <s>{{itemEach.name}}</s>
+          </i>
         </div>
       </div>
-      <div class="MB10">
+      <div class="MB10 CL1">
         <b>购买数量：</b>
         <span>
           <el-input-number size="small" v-model="countBuy" :min="1" :max="999" label="描述文字"></el-input-number>
         </span>
       </div>
       <!-- <el-button type="primary" @click="addCart" v-if="typeBuy=='cart'">确定加入购物车</el-button>
-      <el-button type="primary" >确定直接购买</el-button> -->
+      <el-button type="primary" >确定直接购买</el-button>-->
       <van-button type="info" size="large" @click="addCart" v-if="typeBuy=='cart'">确定加入购物车</van-button>
       <van-button type="info" size="large" @click="buy" v-if="typeBuy=='buy'">确定直接购买</van-button>
     </div>
     <div class="n-bottom-bar H50">
       <van-goods-action>
-        <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" />
+        <van-goods-action-icon icon="chat-o" text="客服" />
         <van-goods-action-icon
           icon="cart-o"
           text="购物车"
@@ -376,4 +376,45 @@ export default {
 .n-bottom-bar {
   box-shadow: 2px 2px 10px #999;
 }
+
+
+ /****************************规格按钮-START****************************/
+.btn-spec {
+  float: left;
+  display: flex;
+  border-radius: 5px;
+  color: #666;
+  padding: 0 4px;
+  height: 36px;
+  line-height: 36px;
+  background: #f7f8fa;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 8px 8px 0;
+  font-style: normal;
+  min-width: 40px;
+}
+
+.btn-spec.focus {
+  color: #ee0a24;
+  background: #fde7e9;
+}
+
+.btn-spec img {
+  width: 30px;
+  height: 30px;
+  margin-right: 4px;
+
+  align-self: center;
+}
+.btn-spec s {
+  text-decoration: none;
+  display: inline-block;
+  min-width: 32px;
+  text-align: center;
+  padding: 0 4px;
+ 
+}
+ /****************************规格按钮-END****************************/
+
 </style>

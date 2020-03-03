@@ -94,7 +94,7 @@ a {
 
 /*屏幕宽度小于360px*/
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 320px) {
     .n-img-box {
         height: 58vw;
     }
@@ -152,4 +152,8 @@ a {
     position: fixed;
     bottom: 0;
     background-color: rgba(3, 3, 3, 0.5);
+}
+
+.n-mobile-img-box img {
+    float: left;
 }

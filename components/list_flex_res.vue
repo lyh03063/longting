@@ -93,10 +93,14 @@ export default {
     .n-flex-main.n-col-5 .n-flex-group {
         width: 32%;
       }
+
+    
   }
   
-  /*屏幕宽度小于360px*/
-  @media screen and (max-width: 360px) {
+
+  
+  /*屏幕宽度小于320px*/
+  @media screen and (max-width: 320px) {
     .n-flex-main.n-col-4 .n-flex-group {
       width: 100%;
     }
