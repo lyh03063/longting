@@ -6,7 +6,7 @@
 
     <!-- banner轮播图 -->
     <banner class="MB20" :list="listBanner" :height="hBanner"></banner>
-    <pannel class="layout1200 MB20" title="推荐商品" >
+    <pannel class="layout1200 MB20" title="热销商品" >
       <!-- 响应式弹性列表-商品列表 -->
       <list_flex_res class="MT20" :list="listGoods" com="goods"></list_flex_res>
     </pannel>
@@ -129,7 +129,7 @@ export default {
   // 此方法设定当前页面的标题以及SEO优化的meta标签中的内容
   head() {
     return {
-      title: "深圳中央空调-深圳市龙庭空调制冷有限公司-首页",
+      title: "深圳市龙庭空调制冷有限公司-首页-深圳中央空调",
       meta: [
         {
           name: "description",
