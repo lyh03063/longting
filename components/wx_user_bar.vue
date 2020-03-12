@@ -22,8 +22,6 @@ export default {
   watch: {
     wxUser: {
       handler(newVal, oldVal) {
-        console.log("wxUser changed");
-        console.log("newVal:", newVal);
         if (newVal) {
           //如果{000}000
           T.wxUserNeed = newVal;

@@ -73,7 +73,6 @@ export default {
     let listBannerS = util.getSonListByAlias({ list, alias: "banner_small" });
     let listPartner = util.getSonListByAlias({ list, alias: "partner" });
     let listCase = util.getSonListByAlias({ list, alias: "project_case" });
-    console.log("listCase:", listCase);
 
     return {
       listBannerS,
@@ -128,7 +127,6 @@ export default {
     T.setBanner(); //调用：{设置banner图函数}
     //事件绑定：窗口变化
     window.addEventListener("resize", () => {
-      console.log("resize####");
       T.setBanner(); //调用：{设置banner图函数}
     });
 

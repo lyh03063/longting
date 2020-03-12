@@ -67,9 +67,6 @@ export default {
   // 触发vuex中的action方法
   // 缓存页面所需数据
   async asyncData({ route, params, payload }) {
-    console.log("payload:", payload);
-    console.log("params:", params);
-    console.log("route:", route);
     let productData = await axios({
       method: "post",
       url: `${global.PUB.domain}/crossList?page=longting_product`,
@@ -123,7 +120,6 @@ export default {
   methods: {
     // 修改当前分页请求axios获取数据
     async changePageIndex() {
-      console.log("T.$route.params.id:", T.$route.params.id);
       let { data } = await axios({
         method: "post",
         url: `${global.PUB.domain}/crossList?page=longting_product`,

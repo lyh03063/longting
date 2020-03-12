@@ -143,7 +143,6 @@ export default {
         listGoods: T.objGoodsCart.listGoods
       }); //合并对象
 
-      console.log("orderData:####", orderData);
 
       util.setLocalStorageObj("orderData", orderData); //调用：{设置一个对象到LocalStorage}
 

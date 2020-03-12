@@ -41,7 +41,6 @@ export default {
     //调用：{给一个对象设置默认属性函数}
     global.util.setObjDefault(T.cf_content_box, { style: { padding: "0" } });
 
-    console.log("T.cf_content_box:", T.cf_content_box);
   }
 };
 </script>

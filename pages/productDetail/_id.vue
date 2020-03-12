@@ -1,6 +1,7 @@
 <template>
   <div>
     <page_head></page_head>
+    <!-- <div class="" >objWxShare:{{objWxShare}}</div> -->
     <div class="main-box layout1200">
       <div class="box-res MB10">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -45,6 +46,7 @@ import contact_right from "@/components/contact_right.vue";
 import axios from "axios";
 let T;
 export default {
+  mixins: [MIX.pageWXLogin,MIX.wx_js_sdk], //混入
   validate({ params }) {
     return /^\d+$/.test(params.id);
   },
@@ -85,6 +87,10 @@ export default {
   methods: {},
   beforeCreate() {
     T = this;
+  },
+  created(){
+    T.objWxShare.title=T.productDetail.name;
+
   },
   mounted() {
     T.categoryList.forEach(item => {

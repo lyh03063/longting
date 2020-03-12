@@ -103,7 +103,6 @@ export default {
   watch: {
     menuMode: {
       async handler(newVal, oldVal) {
-        console.log("menuMode changed");
         let flagShowMobileMenuOld = T.isShowMenu;
         T.isShowMenu = false;
         await T.$nextTick(); //延迟到视图更新

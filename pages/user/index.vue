@@ -72,7 +72,6 @@ export default {
     };
   },
   data() {
-    console.log("global:####", global);
     return {
       DICT:global.DYDICT,
       listOrder: null,

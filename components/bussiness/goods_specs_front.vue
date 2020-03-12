@@ -110,7 +110,6 @@ export default {
       let flag = true;
       //如果当前规格存在显示条件
       if (specEach.objSpecTerm) {
-        console.log("存在显示条件:");
         let indexTerm; //条件规格所在的位置
         let nameTerm; //条件值
         //遍历条件对象，key和value都要用到
@@ -120,7 +119,6 @@ export default {
         }
         //变量：{当前条件列选中的名称}
         let name = lodash.get(T.arrSpecSelected, `[${indexTerm}].objSOp.name`);
-        console.log("name:", name);
         if (name != nameTerm) {
           //如果{000}000
           flag = false;
@@ -241,7 +239,6 @@ export default {
     },
     //函数：{规格项变动函数}
     changeItem(itemEach, specEach) {
-      console.log("changeItem:#####");
       let dictTerm = { 机型: "风管机" };
 
       //变量：{受影响的规格数组}
@@ -262,19 +259,16 @@ export default {
         }
       });
 
-      console.log("arrSpecRel:######", arrSpecRel);
       //循环：{受影响的规格数组}
       arrSpecRel.forEach(docEach => {
         let { keyTerm, index, objSpecTerm } = docEach;
-        console.log("当前规格是条件规格，将影响已选规格项");
+        console.warn("当前规格是条件规格，将影响已选规格项");
         //如果不满足条件，
         if (itemEach.name != objSpecTerm[keyTerm]) {
-          console.log("不满足@@@@");
           T.arrSpecSelected[index].objSOp = {}; //将选项设置为空对象
         } else {
           T.arrSpecSelected[index].objSOp = null; //将选项设置为空对象
 
-          console.log("满足");
         }
       });
 
@@ -288,22 +282,18 @@ export default {
     //函数：{规格变动后更新商品价格函数}
     updatePrice() {
       if (T.isCompleteSelected()) {
-        console.log(":#######选择规格完整");
         //Q1:选择规格完整
         let idSpecChain = FN.getIdSpecChian(T.arrSpecSelected); //调用：{获取规格链id函数}
         let price = lodash.get(T.dictSpecPrice, `${idSpecChain}.price`); //从数据字典获取价格
         T.priceSpec = price;
         if (util.isNullUndefined(price)) {
-          console.log(":#######数据字典规格价格不存在");
           //如果数据字典规格价格不存在
           T.priceSpec = FN.getGoodsPrice(T.docGoods);
         }
       } else {
-        console.log(":#######选择规格不完整");
         //Q2:选择规格不完整
         T.priceSpec = FN.getGoodsPrice(T.docGoods); //调用：{获取商品价格(区间)的函数}
       }
-      console.log("T.priceSpec:#######", T.priceSpec);
     },
     //函数：{规格变动后更新商品图片的函数}
     updateImg(itemEach) {
@@ -332,7 +322,6 @@ export default {
   },
   beforeCreate() {
     T = this;
-    console.log("T.$$msg:####222", T.$$msg);
   },
   created() {
     let { docGoods, listSpecs, listSpecPrice } = T.$props;

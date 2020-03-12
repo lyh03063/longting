@@ -1,6 +1,7 @@
 <template>
   <div>
     <page_head></page_head>
+    <!-- <div class>objWxShare:{{objWxShare}}</div> -->
     <div class="main-box layout1200">
       <div class="box-res MB10">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -10,7 +11,6 @@
           <el-breadcrumb-item>商品详情</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-     
 
       <goods_specs_front v-bind="cfGoodsSpecs"></goods_specs_front>
 
@@ -47,7 +47,7 @@
                   优惠
                   <el-tag type="danger" size="small">满1000减100元</el-tag>
                 </i>
-              </li> -->
+              </li>-->
               <li v-if="doc.deliveryDesc">
                 <span class="C_f60 FS12" v-html="doc.deliveryDesc"></span>
               </li>
@@ -73,7 +73,7 @@ import axios from "axios";
 import goods_specs_front from "@/components/bussiness/goods_specs_front.vue";
 
 export default {
-  mixins: [MIX.pageWXLogin], //混入
+  mixins: [MIX.pageWXLogin, MIX.wx_js_sdk], //混入
   components: {
     page_head,
     contact_right,
@@ -106,7 +106,6 @@ export default {
   },
 
   data() {
-    console.log("T.doc:#", T.doc);
     return {
       //规格选择组件配置
       cfGoodsSpecs: {}
@@ -119,6 +118,7 @@ export default {
   beforeCreate() {
     T = this;
   },
+
   async created() {
     let { listSpecs, listSpecPrice } = T.doc;
     T.cfGoodsSpecs = {
@@ -126,9 +126,12 @@ export default {
       listSpecs,
       listSpecPrice
     };
+
+    //设置微信分享数据
+    T.objWxShare.title = T.doc.title;
+    T.objWxShare.imgUrl = T.doc.imgSrc;
   },
   async mounted() {
-    console.log("T:##", T);
   }
 };
 </script>

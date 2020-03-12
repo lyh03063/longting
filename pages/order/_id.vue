@@ -107,7 +107,6 @@ export default {
     );
 
     doc.address = FN.joinAddressStr(doc.addressObj); //调用：{拼接地址字符串函数}
-    console.log("doc.payStatus_text:", doc.payStatus_text);
 
     return { doc: doc };
   },

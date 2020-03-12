@@ -7,11 +7,11 @@
           <!--word-break:break-all在这里一定要加，否则会把图标挤到上面-->
           <span class style="word-break:break-all">13480986519</span>
         </li>
-        <li class="normal">
+        <!-- <li class="normal">
           <a href="javascript:;">
             <b class="b"></b>在线客服
           </a>
-        </li>
+        </li> -->
         <!-- <li class="normal"><a href="javascript:;"><b class="f"></b>免费预约报价</a></li>-->
 
         <li class="erweima-li">

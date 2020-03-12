@@ -5,9 +5,9 @@ if (typeof(window) === "undefined") { //如果{000}000
     WIN = window;
 }
 WIN.PUB = WIN.PUB || {}
-//WIN.PUB.domain = `https://www.dmagic.cn`
+WIN.PUB.domain = `https://www.dmagic.cn`
 
-WIN.PUB.domain = `http://e6234kn.hn3.mofasuidao.cn`
+//WIN.PUB.domain = `http://e6234kn.hn3.mofasuidao.cn`
 
 
 

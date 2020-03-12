@@ -27,13 +27,15 @@ export default {
             // { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: 'http://www.dmagic.cn/images/IconS/IconS_2568.png' },
+            { rel: 'icon', type: 'image/x-icon', href: 'http://qn-dmagic.dmagic.cn/longting/longting_logo.png' },
             // { rel: 'stylesheet', href: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css' },
             { rel: 'stylesheet', href: 'http://qn-static.dmagic.cn/element-ui@2.12.0/index.css' },
             { rel: 'stylesheet', href: 'http://qn-static.dmagic.cn/public.1.0.6.css' },
             { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/vant@2.4/lib/index.css' }
         ],
         script: [
+            { src: 'http://qn-static.dmagic.cn/moment.min.js' },
+            { src: 'http://res.wx.qq.com/open/js/jweixin-1.6.0.js' },
             // { src: 'https://cdn.jsdelivr.net/npm/vant@2.4/lib/vant.min.js',  defer: true },
             // { src: 'http://qn-static.dmagic.cn/polyfill.min.js' },
             // { src: 'http://qn-static.dmagic.cn/vue@2.6.10/vue.js' },
@@ -57,18 +59,18 @@ export default {
      ** Plugins to load before mounting the App
      */
     plugins: [{
-            src: '~plugins/ElementUI',
-            ssr: true,
-        },
-        {
-            src: '~plugins/vant',
-            ssr: true,
-        },
-        //这个lodash没什么用
-        { src: '~plugins/lodash.js', ssr: false },
-        { src: '~assets/js/public.js', ssr: true }, //服务端public
-        { src: '~assets/js/util.1.2.2.js', ssr: true }, //服务端util****
-        { src: '~assets/js/public_after.js', ssr: true }, //public_after
+        src: '~plugins/ElementUI',
+        ssr: true,
+    },
+    {
+        src: '~plugins/vant',
+        ssr: true,
+    },
+    //这个lodash没什么用
+    { src: '~plugins/lodash.js', ssr: false },
+    { src: '~assets/js/public.js', ssr: true }, //服务端public
+    { src: '~assets/js/util.1.2.2.js', ssr: true }, //服务端util****
+    { src: '~assets/js/public_after.js', ssr: true }, //public_after
 
         //  { src: 'http://qn-static.dmagic.cn/config_detail.1.0.4.js', ssr: false },//服务端util****
 
@@ -100,7 +102,7 @@ export default {
         /*
          ** You can extend webpack config here
          */
-        extend(config, ctx) {}
+        extend(config, ctx) { }
     },
     //生成静态资源的配置-这个后期维护比较麻烦！！！！
     generate: {
@@ -180,7 +182,7 @@ export default {
 
             }
             //函数：{处理列表数据函数}
-            let fnHandaleList = function(list) {
+            let fnHandaleList = function (list) {
                 return list.map(doc => {
                     return {
                         _id: lodash.get(doc, `targetDoc._id`),

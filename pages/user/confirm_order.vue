@@ -5,7 +5,7 @@
       <div class="out-box PT10">
         <!-- {{formData}} -->
         <!-- type:{{type}} -->
-        <van-panel   title="订单商品" v-if="type=='direct_buy'&&orderData">
+        <van-panel title="订单商品" v-if="type=='direct_buy'&&orderData">
           <ul class="n-flex-ul MB10 BC_fff PL10 PR10">
             <li v-for="(item) in orderData.listGoods" :key="item._id+item.idSpecChain">
               <b class="img-box">
@@ -39,46 +39,49 @@
           </ul>
         </van-panel>
 
-        <van-panel class="" title="填写收货地址及备注" v-if="ready">
-          <div class="PL10 PR10" >
-              <ul class="n-flex-ul">
-            <li>
-              <!-- <b>地区选择：</b> -->
-              <i>
-                <select_area v-model="formData.arrArea" value-type="arrObj" :op-level1="arrLevel1"></select_area>
-              </i>
-            </li>
-            <li>
-              <!-- <b>详细地址：</b> -->
-              <i>
-                <el-input placeholder="手机号" v-model="formData.phone"></el-input>
-              </i>
-            </li>
-            <li>
-              <!-- <b>详细地址：</b> -->
-              <i>
-                <el-input
-                  type="textarea"
-                  :rows="3"
-                  placeholder="请输入详细地址"
-                  v-model="formData.addressDetail"
-                ></el-input>
-              </i>
-            </li>
-            <li>
-              <!-- <b>备注：</b> -->
-              <i>
-                <el-input type="textarea" :rows="3" placeholder="订单备注" v-model="formData.remark"></el-input>
-              </i>
-            </li>
-          </ul>
-          <div class="TAC PT10 PB10">
-            <el-button type="primary" :loading="isLoadingPay" v-if="isLoadingPay">请求支付中</el-button>
-            <!-- <el-button type="primary" @click="callWxPay" v-else>提交订单</el-button> -->
-            <van-button type="info" size="large" @click="callWxPay" v-else>提交订单</van-button>
+        <van-panel class title="填写收货地址及备注" v-if="ready">
+          <div class="PL10 PR10">
+            <ul class="n-flex-ul">
+              <li>
+                <!-- <b>地区选择：</b> -->
+                <i>
+                  <select_area
+                    v-model="formData.arrArea"
+                    value-type="arrObj"
+                    :op-level1="arrLevel1"
+                  ></select_area>
+                </i>
+              </li>
+              <li>
+                <!-- <b>详细地址：</b> -->
+                <i>
+                  <el-input placeholder="手机号" v-model="formData.phone"></el-input>
+                </i>
+              </li>
+              <li>
+                <!-- <b>详细地址：</b> -->
+                <i>
+                  <el-input
+                    type="textarea"
+                    :rows="3"
+                    placeholder="请输入详细地址"
+                    v-model="formData.addressDetail"
+                  ></el-input>
+                </i>
+              </li>
+              <li>
+                <!-- <b>备注：</b> -->
+                <i>
+                  <el-input type="textarea" :rows="3" placeholder="订单备注" v-model="formData.remark"></el-input>
+                </i>
+              </li>
+            </ul>
+            <div class="TAC PT10 PB10">
+              <el-button type="primary" :loading="isLoadingPay" v-if="isLoadingPay">请求支付中</el-button>
+              <!-- <el-button type="primary" @click="callWxPay" v-else>提交订单</el-button> -->
+              <van-button type="info" size="large" @click="callWxPay" v-else>提交订单</van-button>
+            </div>
           </div>
-          </div>
-        
         </van-panel>
       </div>
       <!-- <wx_user_bar></wx_user_bar> -->
@@ -116,7 +119,6 @@ export default {
     };
   },
   async asyncData({ route, params }) {
-    console.log("route:", route);
     return { type: route.query.type };
   },
   data() {
@@ -204,7 +206,7 @@ export default {
       };
 
       param.openid = lodash.get(T.wxUser, `openid`);
-
+      //***
       let { code, resWX, message, docOrder } = await FN.$payWxOrder({ param }); //调用：{支付微信订单函数}
       T.resWXPay = resWX;
       if (code == 0) {

@@ -6,7 +6,7 @@
 
     <!-- banner轮播图 -->
     <banner class="MB20" :list="listBanner" :height="hBanner"></banner>
-    <pannel class="layout1200 MB20" title="热销商品" >
+    <pannel class="layout1200 MB20" title="热销商品">
       <!-- 响应式弹性列表-商品列表 -->
       <list_flex_res class="MT20" :list="listGoods" com="goods"></list_flex_res>
     </pannel>
@@ -29,6 +29,8 @@
     <page_foot></page_foot>
     <!-- 右侧联系我们组件 -->
     <contact_right></contact_right>
+
+   
   </div>
 </template>
 
@@ -44,6 +46,7 @@ import list_flex_res from "@/components/list_flex_res.vue";
 import axios from "axios";
 let T;
 export default {
+  mixins: [MIX.wx_js_sdk], //混入
   components: {
     pannel,
     page_head,
@@ -61,7 +64,6 @@ export default {
 
   // 此方法设定当前页面的预处理数据
   async asyncData() {
-    console.log("global.PUB:####4444", global.PUB);
     let {
       data: { list: caseList }
     } = await axios({
@@ -108,13 +110,11 @@ export default {
         }
       });
 
-      console.log("list:#####", list);
       //调用：{根据别名获取子分组数据列表的函数}
       listBannerB = util.getSonListByAlias({ list, alias: "banner_big" });
       listBannerS = util.getSonListByAlias({ list, alias: "banner_small" });
       listGoods = util.getSonListByAlias({ list, alias: "goods" });
     }
-    console.log("listBannerS:$$$$", listBannerS);
 
     return {
       listBannerS,
@@ -152,17 +152,19 @@ export default {
         T.listBanner = T.listBannerS;
         T.hBanner = `180px`;
       }
-    }
+    },
+    
+    
   },
   beforeCreate() {
     T = this;
   },
   created() {},
-  mounted() {
+  async mounted() {
     T.setBanner(); //调用：{设置banner图函数}
+  
     //事件绑定：窗口变化
     window.addEventListener("resize", () => {
-      console.log("resize####");
       T.setBanner(); //调用：{设置banner图函数}
     });
   }
