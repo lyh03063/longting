@@ -11,8 +11,12 @@
     <el-button class="btn-test" plain @click="wx_openAddress()" size="mini">获取收货地址</el-button>
     <el-button class="btn-test" plain @click="wx.closeWindow()" size="mini">关闭网页</el-button>
 
+
+
     <div class="CL1"></div>
     <a target="_blank" href="https://www.weixinsxy.com/jssdk">查看微信官方JS-SDK的演示demo</a>
+    <br>
+     <a  href="/">返回首页</a>
   </div>
 </template>
 

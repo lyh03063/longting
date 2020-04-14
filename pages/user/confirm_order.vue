@@ -39,14 +39,41 @@
           </ul>
         </van-panel>
 
-        <van-panel class title="填写收货地址及备注" v-if="ready">
-          <div class="PL10 PR10">
-            <ul class="n-flex-ul">
+        <van-panel class title v-if="ready">
+          <template #header>
+            <div class="PT8 PL12 PR8 DPF">
+              <span class="DPB FX1 MT3">填写收货地址及备注</span>
+              <div class="W100">
+                <van-button
+                  class="F2"
+                  plain
+                  type="primary"
+                  size="small"
+                  @click="getWXAdresss()"
+                >选择我的地址</van-button>
+              </div>
+            </div>
+          </template>
+          <div class="PL10 PR10 PT6">
+            <div class v-if="formData.useWXAddress">
+              <div class>
+                <span class>{{formData.receiverName}}</span>
+                <span class="FM4">{{formData.phone}}</span>
+              </div>
+              <div class="C_999">{{wxAreaText}} {{formData.addressObj.detail}}</div>
+            </div>
+            <ul class="n-flex-ul" v-else>
+              <li>
+                <!-- <b>详细地址：</b> -->
+                <i>
+                  <el-input placeholder="收货人" v-model="formData.receiverName"></el-input>
+                </i>
+              </li>
               <li>
                 <!-- <b>地区选择：</b> -->
                 <i>
                   <select_area
-                    v-model="formData.arrArea"
+                    v-model="formData.addressObj.arrArea"
                     value-type="arrObj"
                     :op-level1="arrLevel1"
                   ></select_area>
@@ -65,10 +92,12 @@
                     type="textarea"
                     :rows="3"
                     placeholder="请输入详细地址"
-                    v-model="formData.addressDetail"
+                    v-model="formData.addressObj.detail"
                   ></el-input>
                 </i>
               </li>
+            </ul>
+            <ul class="n-flex-ul">
               <li>
                 <!-- <b>备注：</b> -->
                 <i>
@@ -102,7 +131,8 @@ import select_area from "@/components/form_item/select_area.vue";
 import axios from "axios";
 let T;
 export default {
-  mixins: [MIX.pageWXLogin], //混入
+  mixins: [MIX.pageWXLogin, MIX.wx_js_sdk], //混入
+
   components: {
     page_head,
     contact_right,
@@ -121,8 +151,21 @@ export default {
   async asyncData({ route, params }) {
     return { type: route.query.type };
   },
+  computed: {
+    wxAreaText() {
+      let arrArea = lodash.get(this.formData, `addressObj.arrArea`);
+      if (!arrArea) return ""
+      let provinceName = lodash.get(arrArea, `[0].label`);
+      let cityName = lodash.get(arrArea, `[1].label`);
+      let countryName = lodash.get(arrArea, `[2].label`);
+      return `${provinceName}/${cityName}/${countryName}`
+
+    }
+
+  },
   data() {
     return {
+
       orderData: null,
       isLoadingPay: false,
       ready: false,
@@ -134,13 +177,35 @@ export default {
       ],
       resWXPay: { msg: "未支付123" }, //微信支付的响应结果
       formData: {
-        arrArea: null
+        addressObj: {}
       }
     };
   },
   methods: {
+    async getWXAdresss() {
+      let res = await this.wx_openAddress()
+      let { userName, provinceName, cityName, countryName, detailInfo, telNumber, } = res
+
+      let objWXAddress = {
+        useWXAddress: true,
+        receiverName: userName,
+        phone: telNumber,
+        receiverName: userName,
+        addressObj: {
+          detail: detailInfo,
+          arrArea: [{ "value": "", "label": provinceName }, { "value": "", "label": cityName }, { "value": "", "label": countryName }]
+        },
+      }
+
+      let formDataNew = Object.assign({}, this.formData, objWXAddress)
+
+      this.formData = formDataNew
+
+
+
+    },
     //函数：{购买数量变化函数}
-    changeCount: function(item) {
+    changeCount: function (item) {
       item.priceTotal = item.priceSell * item.count; //更新总价
       item.priceTotal = util.money(item.priceTotal);
       let orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
@@ -153,16 +218,15 @@ export default {
     },
     //函数：{ajax下订单函数}
     async ajaxOrder() {
+      alert("ajaxOrder####################");
       let orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
-      let param = { ...orderData, ...T.formData }; //合并参数
-      util.setLocalStorageObj("orderData", param); //调用：{设置一个对象到LocalStorage}
-      //地址对象拼接
-      param.addressObj = {
-        arrArea: T.formData.arrArea,
-        detail: T.formData.addressDetail
-      };
+      let param = { ...orderData, }; //合并参数----...T.formData
+
+
+      param.dataAddon = T.formData
 
       param.openid = lodash.get(T.wxUser, `openid`);
+      util.setLocalStorageObj("orderData", param); //调用：{设置一个对象到LocalStorage}
       //请求接口
       let { data } = await axios({
         withCredentials: true, //携带cookie
@@ -173,16 +237,19 @@ export default {
       return data;
     },
     //函数：{表单校验函数}
-    valid: function(xxx) {
+    valid: function (xxx) {
       let isOk = true;
       let error;
-      if (!T.formData.arrArea) {
+      if (!T.formData.receiverName) {
+        isOk = false;
+        error = "请填写收货人";
+      } else if (!T.formData.addressObj.arrArea) {
         isOk = false;
         error = "请填写收货地址";
       } else if (!T.formData.phone) {
         isOk = false;
         error = "请填写手机";
-      } else if (!T.formData.addressDetail) {
+      } else if (!T.formData.addressObj.detail) {
         isOk = false;
         error = "请填写详细地址";
       }
@@ -197,15 +264,11 @@ export default {
       T.isLoadingPay = true;
 
       let orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
-      let param = { ...orderData, ...T.formData }; //合并参数
-      util.setLocalStorageObj("orderData", param); //调用：{设置一个对象到LocalStorage}
-      //地址对象拼接
-      param.addressObj = {
-        arrArea: T.formData.arrArea,
-        detail: T.formData.addressDetail
-      };
+      let param = { ...orderData, }; //合并参数...T.formData
+      param.dataAddon = T.formData
 
       param.openid = lodash.get(T.wxUser, `openid`);
+      util.setLocalStorageObj("orderData", param); //调用：{设置一个对象到LocalStorage}
       //***
       let { code, resWX, message, docOrder } = await FN.$payWxOrder({ param }); //调用：{支付微信订单函数}
       T.resWXPay = resWX;
@@ -228,8 +291,11 @@ export default {
   mounted() {
     T.orderData = util.getLocalStorageObj("orderData"); //调用：{从LocalStorage获取一个对象的函数}
 
-    let { arrArea, addressDetail, remark, phone } = T.orderData;
-    T.formData = { arrArea, addressDetail, remark, phone };
+    let { dataAddon } = T.orderData
+    if (dataAddon) {//如果{订单附加数据}存在
+      T.formData = { ...dataAddon,  };//useWXAddress: true
+    }
+
     T.ready = true;
   }
 };

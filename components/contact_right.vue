@@ -3,15 +3,17 @@
     <div class="float-bar BC_fff">
       <ul>
         <li class="normal">
-          <b class="a"></b>
-          <!--word-break:break-all在这里一定要加，否则会把图标挤到上面-->
-          <span class style="word-break:break-all">13480986519</span>
+          <a href="tel:13480986519">
+            <b class="a"></b>
+            <!--word-break:break-all在这里一定要加，否则会把图标挤到上面-->
+            <span class style="word-break:break-all">13480986519</span>
+          </a>
         </li>
         <!-- <li class="normal">
           <a href="javascript:;">
             <b class="b"></b>在线客服
           </a>
-        </li> -->
+        </li>-->
         <!-- <li class="normal"><a href="javascript:;"><b class="f"></b>免费预约报价</a></li>-->
 
         <li class="erweima-li">
@@ -53,7 +55,7 @@ export default {
   beforeCreate() {
     T = this;
   },
-  created() {}
+  created() { }
 };
 </script>
 

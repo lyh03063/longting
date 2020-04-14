@@ -35,7 +35,7 @@ export default {
         ],
         script: [
             { src: 'http://qn-static.dmagic.cn/moment.min.js' },
-            { src: 'http://res.wx.qq.com/open/js/jweixin-1.6.0.js' },
+            { src: 'http://res.wx.qq.com/open/js/jweixin-1.6.0.js' },//微信SDK
             // { src: 'https://cdn.jsdelivr.net/npm/vant@2.4/lib/vant.min.js',  defer: true },
             // { src: 'http://qn-static.dmagic.cn/polyfill.min.js' },
             // { src: 'http://qn-static.dmagic.cn/vue@2.6.10/vue.js' },
@@ -69,7 +69,7 @@ export default {
     //这个lodash没什么用
     { src: '~plugins/lodash.js', ssr: false },
     { src: '~assets/js/public.js', ssr: true }, //服务端public
-    { src: '~assets/js/util.1.2.2.js', ssr: true }, //服务端util****
+    { src: '~assets/js/util.js', ssr: true }, //服务端util****
     { src: '~assets/js/public_after.js', ssr: true }, //public_after
 
         //  { src: 'http://qn-static.dmagic.cn/config_detail.1.0.4.js', ssr: false },//服务端util****

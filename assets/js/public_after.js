@@ -118,7 +118,6 @@ import moment from "moment";
                     });
 
                     let signature = data.sign;
-                    // alert111(`网址5：${url} \n签名：${signature}`);
 
                     // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     wx.config({
@@ -170,8 +169,9 @@ import moment from "moment";
 
                     });
                     wx.error(function (res) {
+                       
                         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        // alert("wx.error")
+                        alert("wx.error")
 
                     });
                 }
@@ -195,22 +195,48 @@ import moment from "moment";
                     }
                 })
             },
-            wx_openAddress() {
-                wx.openAddress({
-                    success: function (res) {
-                        var userName = res.userName; // 收货人姓名
-                        var postalCode = res.postalCode; // 邮编
-                        var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
-                        var cityName = res.cityName; // 国标收货地址第二级地址（市）
-                        var countryName = res.countryName; // 国标收货地址第三级地址（国家）
-                        var detailInfo = res.detailInfo; // 详细收货地址信息
-                        var nationalCode = res.nationalCode; // 收货地址国家码
-                        var telNumber = res.telNumber; // 收货人手机号码
+            async wx_openAddress() {
+
+                var promise = new Promise((resolve, reject) => {
+
+                    wx.openAddress({
+                        success: function (res) {
+                       
+                            // alert("openAddress-success:");
+                            console.logs("res:", res);
+                            //  alert(JSON.stringify(res))
+                            
+                            var userName = res.userName; // 收货人姓名
+                            var postalCode = res.postalCode; // 邮编
+                            var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
+                            var cityName = res.cityName; // 国标收货地址第二级地址（市）
+                            var countryName = res.countryName; // 国标收货地址第三级地址（国家）
+                            var detailInfo = res.detailInfo; // 详细收货地址信息
+                            var nationalCode = res.nationalCode; // 收货地址国家码
+                            var telNumber = res.telNumber; // 收货人手机号码
+
+                            
 
 
-                        alert(`userName:${userName}postalCode:${postalCode};provinceName:${provinceName};cityName:${cityName};countryName:${countryName};detailInfo:${detailInfo};nationalCode:${nationalCode};telNumber:${telNumber};`)
-                    }
+                            // alert(`userName:${userName}postalCode:${postalCode};provinceName:${provinceName};cityName:${cityName};countryName:${countryName};detailInfo:${detailInfo};nationalCode:${nationalCode};telNumber:${telNumber};`)
+                            resolve(res)
+                        },
+                        fail: function (res) {
+                            alert("操作失败，请确保在微信端进行操作");
+                            alert(JSON.stringify(res))
+                            reject(res);
+
+                        },
+                    });
+
+
                 });
+
+                return promise
+
+
+
+
 
             }
 
