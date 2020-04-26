@@ -112,6 +112,7 @@ export default {
 
       //调用：{根据别名获取子分组数据列表的函数}
       listBannerB = util.getSonListByAlias({ list, alias: "banner_big" });
+      console.log(`listBannerB:####`, listBannerB);
       listBannerS = util.getSonListByAlias({ list, alias: "banner_small" });
       listGoods = util.getSonListByAlias({ list, alias: "goods" });
     }

@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- height="480px" -->
-    <el-carousel class="banner-main" :height="height">
+    <el-carousel class="banner-main" :height="height" :interval="5000">
       <el-carousel-item v-for="(item,index) in list" :key="index">
         <a  :href="item.link">
           <div class="bg_slide" :style="{'background-image': `url(${item.imgSrc})`}">
